@@ -133,6 +133,7 @@ const fetchMyTeams = async () => {
   loading.value = true
   const result = await runGQLQuery({
     query: GetMyTeamsDocument,
+    variables: {},
   })
   loading.value = false
 

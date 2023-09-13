@@ -11,22 +11,12 @@
         <HoppSmartSpinner class="mb-4" />
         <span class="text-secondaryLight">{{ t("state.loading") }}</span>
       </div>
-      <div
+      <HoppSmartPlaceholder
         v-if="!loading && myTeams.length === 0"
-        class="flex flex-col items-center justify-center p-4 text-secondaryLight"
+        :src="`/images/states/${colorMode.value}/add_group.svg`"
+        :alt="`${t('empty.teams')}`"
+        :text="`${t('empty.teams')}`"
       >
-        <img
-          :src="`/images/states/${colorMode.value}/add_group.svg`"
-          loading="lazy"
-          class="inline-flex flex-col object-contain object-center w-16 h-16 mb-8"
-          :alt="`${t('empty.teams')}`"
-        />
-        <span class="mb-4 text-center">
-          {{ t("empty.teams") }}
-        </span>
-        <span class="mb-4 text-center">
-          {{ t("empty.teams_ask_admin") }}
-        </span>
         <HoppButtonSecondary
           v-if="
             false && '// Team creation should be handled at Admin Site only'
@@ -35,7 +25,7 @@
           filled
           @click="displayModalAdd(true)"
         />
-      </div>
+      </HoppSmartPlaceholder>
       <div
         v-else-if="!loading"
         class="grid gap-4"
