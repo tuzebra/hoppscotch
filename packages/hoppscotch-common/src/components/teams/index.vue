@@ -77,11 +77,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue"
-import { onLoggedIn } from "@composables/auth"
-import TeamListAdapter from "~/helpers/teams/TeamListAdapter"
 import { useI18n } from "@composables/i18n"
 import { useReadonlyStream } from "@composables/stream"
 import { useColorMode } from "@composables/theming"
+import { WorkspaceService } from "~/services/workspace.service"
+import { useService } from "dioc/vue"
 
 const t = useI18n()
 
@@ -97,7 +97,8 @@ const showModalInvite = ref(false)
 const editingTeam = ref<any>({}) // TODO: Check this out
 const editingTeamID = ref<any>("")
 
-const adapter = new TeamListAdapter(true)
+const workspaceService = useService(WorkspaceService)
+const adapter = workspaceService.acquireTeamListAdapter(10000)
 const adapterLoading = useReadonlyStream(adapter.loading$, false)
 const adapterError = useReadonlyStream(adapter.error$, null)
 const myTeams = useReadonlyStream(adapter.teamList$, [])
@@ -105,12 +106,6 @@ const myTeams = useReadonlyStream(adapter.teamList$, [])
 const loading = computed(
   () => adapterLoading.value && myTeams.value.length === 0
 )
-
-onLoggedIn(() => {
-  try {
-    adapter.initialize()
-  } catch (e) {}
-})
 
 const displayModalAdd = (shouldDisplay: boolean) => {
   showModalAdd.value = shouldDisplay
